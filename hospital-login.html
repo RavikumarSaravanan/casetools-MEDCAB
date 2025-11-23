@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Login - Ambulance Booking System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0077b6, #00b4d8);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            width: 400px;
+            text-align: center;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: #0077b6;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+        }
+        
+        h1 {
+            color: #0077b6;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+        }
+        
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            border-color: #0077b6;
+            outline: none;
+        }
+        
+        button {
+            background: #0077b6;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background: #023e8a;
+        }
+        
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            color: #0077b6;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .message {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+        
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">🏥</div>
+        <h1>Hospital Login</h1>
+        <p>Access hospital dashboard</p>
+        
+        <div id="message" class="message"></div>
+        
+        <form id="hospitalLoginForm">
+            <div class="form-group">
+                <label for="hospitalId">Hospital ID</label>
+                <input type="text" id="hospitalId" name="hospitalId" placeholder="Enter your Hospital ID" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            
+            <button type="submit">Login as Hospital</button>
+        </form>
+        
+        <a href="login.html" class="back-link">← Back to Main Login</a>
+    </div>
+
+    <script>
+        document.getElementById('hospitalLoginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const messageDiv = document.getElementById('message');
+            const hospitalId = document.getElementById('hospitalId').value;
+            const password = document.getElementById('password').value;
+            
+            // In a real application, you would authenticate with the server
+            // For this demo, we'll use a simple validation
+            if (hospitalId && password) {
+                // Save hospital info to localStorage
+                localStorage.setItem('hospitalId', hospitalId);
+                localStorage.setItem('hospitalName', 'City General Hospital');
+                localStorage.setItem('loggedInAs', 'hospital');
+                
+                messageDiv.className = 'message success';
+                messageDiv.textContent = 'Login successful! Redirecting to dashboard...';
+                messageDiv.style.display = 'block';
+                
+                // Redirect to hospital dashboard
+                setTimeout(() => {
+                    window.location.href = 'hospital-dashboard.html';
+                }, 1500);
+            } else {
+                messageDiv.className = 'message error';
+                messageDiv.textContent = 'Please enter both Hospital ID and Password.';
+                messageDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

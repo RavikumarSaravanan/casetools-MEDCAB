@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<head>
+  <title>Book Ambulance - ABS</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #e9ecef;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px;
+    }
+
+    .booking-container, .driver-location {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 600px;
+      transition: all 0.4s ease;
+    }
+
+    h2 {
+      text-align: center;
+      color: #dc3545;
+      margin-bottom: 25px;
+      border-bottom: 2px solid #f8d7da;
+      padding-bottom: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #495057;
+    }
+
+    input[type="text"], input[type="tel"], input[type="datetime-local"], textarea, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ced4da;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+
+    textarea {
+      resize: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #c82333;
+    }
+
+    .map-placeholder {
+      height: 250px;
+      background-color: #e9ecef;
+      border: 1px solid #ced4da;
+      border-radius: 6px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #6c757d;
+      margin-top: 20px;
+    }
+
+    .driver-location {
+      display: none; /* hidden initially */
+      text-align: center;
+    }
+
+    .driver-location h3 {
+      color: #28a745;
+      margin-bottom: 15px;
+    }
+
+    .driver-details {
+      background: #f8f9fa;
+      border: 1px solid #ced4da;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 10px;
+      text-align: left;
+    }
+    
+    .message {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      text-align: center;
+      display: none;
+    }
+    
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="booking-container" id="bookingContainer">
+    <h2>Book Your Ambulance Now</h2>
+    <div id="message" class="message"></div>
+    <form id="bookingForm">
+      <div class="form-group">
+        <label for="patientName">Patient Full Name</label>
+        <input type="text" id="patientName" name="patientName" placeholder="Enter patient's name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="contactNumber">Contact Number</label>
+        <input type="tel" id="contactNumber" name="contactNumber" pattern="[0-9]{10}" placeholder="10-digit mobile number" required>
+      </div>
+
+      <div class="form-group">
+        <label for="pickupAddress">Pickup Address</label>
+        <textarea id="pickupAddress" name="pickupAddress" placeholder="Enter pickup address" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="bookingDateTime">Booking Date & Time</label>
+        <input type="datetime-local" id="bookingDateTime" name="bookingDateTime" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="ambulanceType">Ambulance Type</label>
+        <select id="ambulanceType" name="ambulanceType" required>
+          <option value="">Select Ambulance Type</option>
+          <option value="BLS">Basic Life Support (BLS)</option>
+          <option value="ALS">Advanced Life Support (ALS)</option>
+          <option value="PTV">Patient Transport Vehicle (PTV)</option>
+          <option value="Neonatal">Neonatal Ambulance</option>
+          <option value="Air">Air Ambulance</option>
+          <option value="Mortuary">Mortuary Ambulance</option>
+        </select>
+      </div>
+
+      <button type="submit">Confirm Booking</button>
+    </form>
+  </div>
+
+  <!-- DRIVER LOCATION SECTION -->
+  <div class="driver-location" id="driverLocation">
+    <h2>Driver Assigned 🚑</h2>
+    <h3>Tracking Your Ambulance in Real-Time...</h3>
+
+    <div class="map-placeholder">
+      [Live Driver Location Map – Updating...]
+    </div>
+
+    <div class="driver-details">
+      <h3>Driver Details</h3>
+      <p><strong>Driver Name:</strong> <span id="driverName">-</span></p>
+      <p><strong>Vehicle No:</strong> <span id="vehicleNumber">-</span></p>
+      <p><strong>ETA:</strong> <span id="eta">8 minutes</span></p>
+      <p><strong>Contact:</strong> <span id="driverContact">-</span></p>
+    </div>
+
+    <button onclick="goBack()">← Back to Booking</button>
+  </div>
+  <script>
+        // Set default datetime to now
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        document.getElementById('bookingDateTime').value = now.toISOString().slice(0, 16);
+        
+        document.getElementById('bookingForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const messageDiv = document.getElementById('message');
+            
+            const formData = {
+                patientName: document.getElementById('patientName').value,
+                contactNumber: document.getElementById('contactNumber').value,
+                pickupAddress: document.getElementById('pickupAddress').value,
+                bookingDateTime: document.getElementById('bookingDateTime').value,
+                ambulanceType: document.getElementById('ambulanceType').value
+            };
+            
+            // Send booking data to backend
+            fetch('/api/book-ambulance', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    messageDiv.className = 'message success';
+                    messageDiv.textContent = 'Booking successful! Booking ID: ' + data.bookingId;
+                    messageDiv.style.display = 'block';
+                    
+                    // Store booking ID in localStorage for tracking
+                    localStorage.setItem('currentBookingId', data.bookingId);
+                    
+                    // Show driver location section
+                    document.getElementById('bookingContainer').style.display = 'none';
+                    document.getElementById('driverLocation').style.display = 'block';
+                    
+                    // Populate driver details if available
+                    if (data.driver) {
+                        document.getElementById('driverName').textContent = data.driver.name;
+                        document.getElementById('vehicleNumber').textContent = data.driver.vehicleNumber;
+                        document.getElementById('driverContact').textContent = data.driver.contact;
+                    }
+                } else {
+                    messageDiv.className = 'message error';
+                    messageDiv.textContent = data.message;
+                    messageDiv.style.display = 'block';
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                messageDiv.className = 'message error';
+                messageDiv.textContent = 'An error occurred. Please try again later.';
+                messageDiv.style.display = 'block';
+            });
+        });
+        
+        function goBack() {
+            document.getElementById('driverLocation').style.display = 'none';
+            document.getElementById('bookingContainer').style.display = 'block';
+            document.getElementById('bookingForm').reset();
+            
+            // Set default datetime to now
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            document.getElementById('bookingDateTime').value = now.toISOString().slice(0, 16);
+        }
+    </script>
+
+</body>
+</html>

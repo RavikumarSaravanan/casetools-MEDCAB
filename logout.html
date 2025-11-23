@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<head>
+<title>Logout - Ambulance Booking System</title>
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(120deg, #0077b6, #00b4d8);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  color: #fff;
+}
+.container {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 40px 60px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  animation: fadeIn 0.8s ease;
+}
+@keyframes fadeIn {
+  from {opacity: 0; transform: scale(0.9);}
+  to {opacity: 1; transform: scale(1);}
+}
+h1 {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+p {
+  font-size: 15px;
+  margin-bottom: 25px;
+}
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #fff;
+  color: #0077b6;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s;
+}
+button:hover {
+  background: #caf0f8;
+}
+footer {
+  position: absolute;
+  bottom: 15px;
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  color: #caf0f8;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>You have successfully logged out 🚑</h1>
+  <p>Thank you for using the Ambulance Booking System.<br>
+  For emergencies, please dial <strong>108</strong> or contact your nearest hospital.</p>
+  <button onclick="window.location.href='login.html'">Login Again</button>
+  <p style="font-size:12px;margin-top:10px;">Redirecting to login page in 5 seconds...</p>
+</div>
+
+<footer>
+  © 2025 Ambulance Booking System | Safe & Fast Emergency Response
+</footer>
+
+<script>
+setTimeout(() => {
+  window.location.href = "login.html";
+}, 5000);
+</script>
+
+</body>
+</html>

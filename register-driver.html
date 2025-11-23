@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register New Driver - Ambulance Booking System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0077b6, #00b4d8);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .register-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            width: 500px;
+            text-align: center;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: #0077b6;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+        }
+        
+        h1 {
+            color: #0077b6;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+        }
+        
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            border-color: #0077b6;
+            outline: none;
+        }
+        
+        button {
+            background: #0077b6;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background: #023e8a;
+        }
+        
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            color: #0077b6;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .message {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+        
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+        
+        .login-link {
+            margin-top: 20px;
+            color: #0077b6;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .login-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="logo">🚗</div>
+        <h1>Register New Driver</h1>
+        <p>Create a new driver account</p>
+        
+        <div id="message" class="message"></div>
+        
+        <form id="driverRegisterForm">
+            <div class="form-group">
+                <label for="name">Full Name *</label>
+                <input type="text" id="name" name="name" placeholder="Enter driver's full name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="vehicleNumber">Vehicle Number *</label>
+                <input type="text" id="vehicleNumber" name="vehicleNumber" placeholder="Enter vehicle number" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="contact">Contact Number *</label>
+                <input type="text" id="contact" name="contact" placeholder="Enter contact number" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password *</label>
+                <input type="password" id="password" name="password" placeholder="Create a password" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password *</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+            </div>
+            
+            <button type="submit">Register Driver</button>
+        </form>
+        
+        <a href="driver.html" class="login-link">Already have an account? Login</a>
+        <a href="login.html" class="back-link">← Back to Main Login</a>
+    </div>
+
+    <script>
+        document.getElementById('driverRegisterForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const messageDiv = document.getElementById('message');
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Check if passwords match
+            if (password !== confirmPassword) {
+                messageDiv.className = 'message error';
+                messageDiv.textContent = 'Passwords do not match. Please try again.';
+                messageDiv.style.display = 'block';
+                return;
+            }
+            
+            // Check password strength
+            if (password.length < 6) {
+                messageDiv.className = 'message error';
+                messageDiv.textContent = 'Password must be at least 6 characters long.';
+                messageDiv.style.display = 'block';
+                return;
+            }
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                vehicleNumber: document.getElementById('vehicleNumber').value,
+                contact: document.getElementById('contact').value,
+                password: password
+            };
+            
+            // Send registration data to backend
+            fetch('/api/register-driver', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    messageDiv.className = 'message success';
+                    messageDiv.textContent = 'Driver registered successfully! Driver ID: ' + data.driver.id;
+                    messageDiv.style.display = 'block';
+                    
+                    // Reset form
+                    document.getElementById('driverRegisterForm').reset();
+                    
+                    // Show success message with driver ID
+                    messageDiv.innerHTML += '<br><br>Your Driver ID is: <strong>' + data.driver.id + '</strong><br>You can now <a href="driver.html">login</a> with this ID.';
+                } else {
+                    messageDiv.className = 'message error';
+                    messageDiv.textContent = data.message;
+                    messageDiv.style.display = 'block';
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                messageDiv.className = 'message error';
+                messageDiv.textContent = 'An error occurred. Please try again later.';
+                messageDiv.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>

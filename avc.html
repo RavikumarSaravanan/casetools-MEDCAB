@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<head>
+<title>Hospital Availability - Ambulance Booking System</title>
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f0f9ff;
+  margin: 0;
+  padding: 0;
+}
+header {
+  background: #0077b6;
+  color: white;
+  text-align: center;
+  padding: 15px;
+}
+.container {
+  max-width: 1000px;
+  margin: 30px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.search-box {
+  text-align: center;
+  margin-bottom: 25px;
+}
+input[type="text"] {
+  width: 70%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+button {
+  background: #0077b6;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-left: 5px;
+}
+button:hover {
+  background: #0096c7;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+table th, table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+table th {
+  background: #0077b6;
+  color: white;
+}
+table tr:nth-child(even) {
+  background: #f8f9fa;
+}
+.status {
+  font-weight: bold;
+  border-radius: 6px;
+  padding: 6px 10px;
+}
+.available {
+  background: #caffbf;
+  color: #065f46;
+}
+.unavailable {
+  background: #ffadad;
+  color: #7f1d1d;
+}
+footer {
+  text-align: center;
+  margin-top: 20px;
+  color: #555;
+  font-size: 14px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h2>Hospital Availability Checker</h2>
+  <p>Check the availability of hospital services near you</p>
+</header>
+
+<div class="container">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search Hospital by Name or City...">
+    <button onclick="searchHospital()">Search</button>
+  </div>
+
+  <table id="hospitalTable">
+    <thead>
+      <tr>
+        <th>Hospital Name</th>
+        <th>City</th>
+        <th>ICU Beds</th>
+        <th>Doctors On Duty</th>
+        <th>Ambulance Availability</th>
+        <th>Emergency Services</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Apollo Hospital</td>
+        <td>Chennai</td>
+        <td><span class="status available">Available</span></td>
+        <td><span class="status available">Available</span></td>
+        <td><span class="status available">Available</span></td>
+        <td><span class="status available">24/7</span></td>
+      </tr>
+      <tr>
+        <td>MIOT International</td>
+        <td>Madurai</td>
+        <td><span class="status unavailable">Full</span></td>
+        <td><span class="status available">Available</span></td>
+        <td><span class="status unavailable">Not Available</span></td>
+        <td><span class="status available">24/7</span></td>
+      </tr>
+      <tr>
+        <td>Government Hospital</td>
+        <td>Coimbatore</td>
+        <td><span class="status available">Available</span></td>
+        <td><span class="status available">Available</span></td>
+        <td><span class="status available">Available</span></td>
+        <td><span class="status available">24/7</span></td>
+      </tr>
+      <tr>
+        <td>Meenakshi Mission</td>
+        <td>Salem</td>
+        <td><span class="status unavailable">Full</span></td>
+        <td><span class="status available">Available</span></td>
+        <td><span class="status unavailable">Not Available</span></td>
+        <td><span class="status available">Daytime</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>
+  © 2025 Ambulance Booking System | Hospital Availability Check
+</footer>
+
+<script>
+function searchHospital() {
+  const input = document.getElementById("searchInput").value.toUpperCase();
+  const table = document.getElementById("hospitalTable");
+  const tr = table.getElementsByTagName("tr");
+
+  for (let i = 1; i < tr.length; i++) {
+    const td = tr[i].getElementsByTagName("td");
+    let found = false;
+
+    for (let j = 0; j < td.length; j++) {
+      if (td[j] && td[j].innerText.toUpperCase().indexOf(input) > -1) {
+        found = true;
+        break;
+      }
+    }
+    tr[i].style.display = found ? "" : "none";
+  }
+}
+</script>
+
+</body>
+</html>

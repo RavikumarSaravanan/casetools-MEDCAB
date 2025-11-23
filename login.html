@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Ambulance Booking System - Login</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #0077b6, #00b4d8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #fff;
+      padding: 25px;
+      border-radius: 15px;
+      text-align: center;
+      width: 320px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    }
+    h2 {
+      color: #0077b6;
+    }
+    button {
+      width: 90%;
+      margin: 10px 0;
+      padding: 10px;
+      background: #0077b6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #023e8a;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Ambulance Booking System</h2>
+    <p>Select your login type</p>
+    <button onclick="location.href='user.html'">Patient Login</button>
+    <button onclick="location.href='AM.html'">Hospital Login</button>
+    <button onclick="location.href='driver.html'">Driver Login</button>
+    <p style="margin-top: 20px;">
+      <a href="register-driver.html" style="color: #0077b6; text-decoration: none; font-weight: bold;">
+        ➕ Register New Driver
+      </a>
+    </p>
+  </div>
+  <script>localStorage.setItem("loggedIn", "true");
+</script>
+</body>
+</html>

@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Dashboard - Ambulance Booking System</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #0077b6, #00b4d8);
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0077b6;
+            font-weight: bold;
+        }
+        
+        .nav-buttons button {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: all 0.3s;
+        }
+        
+        .nav-buttons button:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .container {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+        
+        .sidebar {
+            width: 250px;
+            background: white;
+            padding: 20px 0;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            padding: 15px 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .sidebar-menu li:hover, .sidebar-menu li.active {
+            background: #e3f2fd;
+            border-left: 4px solid #0077b6;
+        }
+        
+        .sidebar-menu li i {
+            width: 20px;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .dashboard-title h1 {
+            font-size: 28px;
+            color: #0077b6;
+        }
+        
+        .dashboard-title p {
+            color: #666;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .icon-blue { background: #e3f2fd; color: #0077b6; }
+        .icon-green { background: #e8f5e9; color: #4caf50; }
+        .icon-orange { background: #fff3e0; color: #ff9800; }
+        .icon-purple { background: #f3e5f5; color: #9c27b0; }
+        
+        .stat-info h3 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .stat-info p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .content-section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-header h2 {
+            color: #0077b6;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary { background: #0077b6; color: white; }
+        .btn-primary:hover { background: #023e8a; }
+        
+        .btn-success { background: #4caf50; color: white; }
+        .btn-success:hover { background: #388e3c; }
+        
+        .btn-warning { background: #ff9800; color: white; }
+        .btn-warning:hover { background: #f57c00; }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            background: #f5f7fa;
+            color: #666;
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background: #f5f7fa;
+        }
+        
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-pending { background: #ffecb3; color: #ff9800; }
+        .status-confirmed { background: #bbdefb; color: #2196f3; }
+        .status-completed { background: #c8e6c9; color: #4caf50; }
+        
+        .action-buttons button {
+            padding: 6px 12px;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+        
+        .map-container {
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+        
+        .location-update {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">🚑 Ambulance Booking System</div>
+        <div class="user-info">
+            <div class="user-avatar" id="driverAvatar">D</div>
+            <div>
+                <div id="driverName">Driver Name</div>
+                <div style="font-size: 12px; opacity: 0.8;">Driver Dashboard</div>
+            </div>
+            <div class="nav-buttons">
+                <button onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="active" onclick="showSection('dashboard')">
+                    <span>📊</span> Dashboard
+                </li>
+                <li onclick="showSection('bookings')">
+                    <span>📋</span> My Bookings
+                </li>
+                <li onclick="showSection('location')">
+                    <span>📍</span> Location Tracking
+                </li>
+                <li onclick="showSection('profile')">
+                    <span>👤</span> My Profile
+                </li>
+            </ul>
+        </div>
+        
+        <div class="main-content">
+            <!-- Dashboard Section -->
+            <div id="dashboard-section">
+                <div class="dashboard-header">
+                    <div class="dashboard-title">
+                        <h1>Driver Dashboard</h1>
+                        <p>Welcome back! Here's what's happening today.</p>
+                    </div>
+                </div>
+                
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-icon icon-blue">🚗</div>
+                        <div class="stat-info">
+                            <h3 id="totalBookings">0</h3>
+                            <p>Total Bookings</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon icon-green">✅</div>
+                        <div class="stat-info">
+                            <h3 id="completedBookings">0</h3>
+                            <p>Completed Today</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon icon-orange">⏳</div>
+                        <div class="stat-info">
+                            <h3 id="pendingBookings">0</h3>
+                            <p>Pending Rides</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon icon-purple">⭐</div>
+                        <div class="stat-info">
+                            <h3>4.8</h3>
+                            <p>Average Rating</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2>Recent Bookings</h2>
+                        <button class="btn btn-primary" onclick="loadBookings()">Refresh</button>
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Patient</th>
+                                <th>Pickup Address</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookingsTable">
+                            <tr>
+                                <td colspan="5" style="text-align: center;">Loading bookings...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- My Bookings Section -->
+            <div id="bookings-section" style="display: none;">
+                <div class="dashboard-header">
+                    <div class="dashboard-title">
+                        <h1>My Bookings</h1>
+                        <p>Manage all your assigned bookings</p>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2>All Assigned Bookings</h2>
+                        <button class="btn btn-primary" onclick="loadBookings()">Refresh</button>
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Patient Name</th>
+                                <th>Contact</th>
+                                <th>Pickup Address</th>
+                                <th>Booking Time</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allBookingsTable">
+                            <tr>
+                                <td colspan="7" style="text-align: center;">Loading bookings...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Location Tracking Section -->
+            <div id="location-section" style="display: none;">
+                <div class="dashboard-header">
+                    <div class="dashboard-title">
+                        <h1>Location Tracking</h1>
+                        <p>Update your location and track rides</p>
+                    </div>
+                </div>
+                
+                <div class="location-update">
+                    <div>
+                        <strong>Last Location Update:</strong> <span id="lastLocationUpdate">Never</span>
+                    </div>
+                    <button class="btn btn-success" onclick="updateLocation()">Update My Location</button>
+                </div>
+                
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2>Live Tracking Map</h2>
+                    </div>
+                    
+                    <div class="map-container">
+                        <div id="map"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Profile Section -->
+            <div id="profile-section" style="display: none;">
+                <div class="dashboard-header">
+                    <div class="dashboard-title">
+                        <h1>My Profile</h1>
+                        <p>Manage your driver profile</p>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2>Driver Information</h2>
+                    </div>
+                    
+                    <div id="driverProfile">
+                        <p>Loading profile...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Global variables
+        let map;
+        let driverMarker;
+        let currentDriver = null;
+        let activeBookings = [];
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if driver is logged in
+            const driverId = localStorage.getItem('driverId');
+            if (!driverId) {
+                window.location.href = 'driver.html';
+                return;
+            }
+            
+            // Set driver info
+            document.getElementById('driverName').textContent = localStorage.getItem('driverName') || 'Driver';
+            
+            // Initialize map
+            initMap();
+            
+            // Load data
+            loadDriverProfile();
+            loadBookings();
+            loadStats();
+            
+            // Set up periodic updates
+            setInterval(loadBookings, 30000); // Refresh every 30 seconds
+        });
+        
+        // Initialize map
+        function initMap() {
+            map = L.map('map').setView([13.0827, 80.2707], 13);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            
+            driverMarker = L.marker([13.0827, 80.2707], {
+                icon: L.icon({
+                    iconUrl: 'https://cdn-icons-png.flaticon.com/512/60/60984.png',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 16]
+                })
+            }).addTo(map)
+                .bindPopup('Your Location');
+        }
+        
+        // Show specific section
+        function showSection(section) {
+            // Hide all sections
+            document.getElementById('dashboard-section').style.display = 'none';
+            document.getElementById('bookings-section').style.display = 'none';
+            document.getElementById('location-section').style.display = 'none';
+            document.getElementById('profile-section').style.display = 'none';
+            
+            // Show selected section
+            document.getElementById(section + '-section').style.display = 'block';
+            
+            // Update active menu item
+            document.querySelectorAll('.sidebar-menu li').forEach(li => {
+                li.classList.remove('active');
+            });
+            event.target.closest('li').classList.add('active');
+        }
+        
+        // Load driver profile
+        function loadDriverProfile() {
+            const driverId = localStorage.getItem('driverId');
+            
+            fetch(`/api/drivers`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const driver = data.drivers.find(d => d._id === driverId);
+                        if (driver) {
+                            currentDriver = driver;
+                            document.getElementById('driverProfile').innerHTML = `
+                                <div style="display: flex; gap: 30px;">
+                                    <div style="flex: 1;">
+                                        <p><strong>Name:</strong> ${driver.name}</p>
+                                        <p><strong>Driver ID:</strong> ${driver._id}</p>
+                                        <p><strong>Vehicle Number:</strong> ${driver.vehicleNumber}</p>
+                                        <p><strong>Contact:</strong> ${driver.contact}</p>
+                                        <p><strong>Status:</strong> <span style="color: green; font-weight: bold;">Available</span></p>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <p><strong>Joined:</strong> ${new Date(driver.createdAt).toLocaleDateString()}</p>
+                                        <p><strong>Total Rides:</strong> 124</p>
+                                        <p><strong>Average Rating:</strong> 4.8 ⭐</p>
+                                        <p><strong>Availability:</strong> <span style="color: green;">Online</span></p>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 20px; text-align: right;">
+                                    <button class="btn btn-primary">Edit Profile</button>
+                                </div>
+                            `;
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading profile:', error);
+                });
+        }
+        
+        // Load bookings
+        function loadBookings() {
+            fetch('/api/active-bookings')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const driverId = localStorage.getItem('driverId');
+                        activeBookings = data.bookings.filter(booking => 
+                            booking.driverId && booking.driverId._id === driverId
+                        );
+                        
+                        // Update recent bookings table
+                        updateBookingsTable('bookingsTable', activeBookings.slice(0, 5));
+                        
+                        // Update all bookings table
+                        updateBookingsTable('allBookingsTable', activeBookings);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading bookings:', error);
+                });
+        }
+        
+        // Update bookings table
+        function updateBookingsTable(tableId, bookings) {
+            const tableBody = document.getElementById(tableId);
+            
+            if (bookings.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="7" style="text-align: center;">No bookings found</td></tr>`;
+                return;
+            }
+            
+            let html = '';
+            bookings.forEach(booking => {
+                html += `
+                    <tr>
+                        <td>${booking._id.substring(0, 8)}</td>
+                        <td>${booking.patientName}</td>
+                        <td>${booking.contactNumber}</td>
+                        <td>${booking.pickupAddress.substring(0, 30)}${booking.pickupAddress.length > 30 ? '...' : ''}</td>
+                        <td>${new Date(booking.bookingDateTime).toLocaleString()}</td>
+                        <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
+                        <td class="action-buttons">
+                            <button class="btn btn-success" onclick="startRide('${booking._id}')">Start</button>
+                            <button class="btn btn-warning" onclick="completeRide('${booking._id}')">Complete</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tableBody.innerHTML = html;
+        }
+        
+        // Load statistics
+        function loadStats() {
+            // In a real app, this would come from the server
+            document.getElementById('totalBookings').textContent = '124';
+            document.getElementById('completedBookings').textContent = '8';
+            document.getElementById('pendingBookings').textContent = '3';
+        }
+        
+        // Update location
+        function updateLocation() {
+            if (!navigator.geolocation) {
+                alert('Geolocation is not supported by your browser.');
+                return;
+            }
+            
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    
+                    // Update marker on map
+                    driverMarker.setLatLng([lat, lng]);
+                    map.setView([lat, lng], 15);
+                    
+                    // Update last location time
+                    document.getElementById('lastLocationUpdate').textContent = 
+                        new Date().toLocaleTimeString();
+                    
+                    // In a real app, you would send this to the server
+                    alert('Location updated successfully!');
+                },
+                function(error) {
+                    console.error('Error getting location:', error);
+                    alert('Unable to get your location. Please ensure location services are enabled.');
+                }
+            );
+        }
+        
+        // Start ride
+        function startRide(bookingId) {
+            if (confirm('Are you ready to start this ride?')) {
+                // In a real app, you would update the booking status on the server
+                alert('Ride started! Navigate to the pickup location.');
+            }
+        }
+        
+        // Complete ride
+        function completeRide(bookingId) {
+            if (confirm('Mark this ride as completed?')) {
+                // In a real app, you would update the booking status on the server
+                alert('Ride completed successfully!');
+                loadBookings(); // Refresh bookings
+            }
+        }
+        
+        // Logout
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('driverId');
+                localStorage.removeItem('driverName');
+                localStorage.removeItem('loggedInAs');
+                window.location.href = 'driver.html';
+            }
+        }
+    </script>
+</body>
+</html>

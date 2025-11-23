@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<head>
+<title>Reports & Analysis - Ambulance Booking System</title>
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f1f9ff;
+  margin: 0;
+  padding: 0;
+}
+header {
+  background: #0077b6;
+  color: #fff;
+  text-align: center;
+  padding: 15px;
+}
+.container {
+  padding: 20px;
+  text-align: center;
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.card h3 {
+  color: #0077b6;
+}
+.chart-section {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 30px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.chart-bar {
+  background: #caf0f8;
+  border-radius: 10px;
+  height: 25px;
+  margin: 10px 0;
+  position: relative;
+}
+.chart-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 10px;
+  text-align: right;
+  color: white;
+  padding-right: 10px;
+  line-height: 25px;
+}
+.bls { width: 80%; background: #0077b6; }
+.als { width: 60%; background: #00b4d8; }
+.ptv { width: 40%; background: #70e5fd; }
+.na  { width: 25%; background: #29889b; }
+.aa  { width: 5%; background: #607e84; }
+.ma  { width: 10%; background: #6db7c6; }
+
+footer {
+  background: #0077b6;
+  color: white;
+  text-align: center;
+  padding: 12px;
+  margin-top: 30px;
+}
+button {
+  background: #0077b6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+button:hover {
+  background: #023e8a;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h2>Ambulance Booking System - Reports & Analysis</h2>
+</header>
+
+<div class="container">
+  <h3>Performance Overview</h3>
+
+  <div class="cards">
+    <div class="card">
+      <h3>Total Bookings</h3>
+      <p style="font-size:24px; color:#023e8a;">1,250</p>
+    </div>
+    <div class="card">
+      <h3>Active Ambulances</h3>
+      <p style="font-size:24px; color:#2a9d8f;">35</p>
+    </div>
+    <div class="card">
+      <h3>Completed Trips</h3>
+      <p style="font-size:24px; color:#00b4d8;">1,100</p>
+    </div>
+    <div class="card">
+      <h3>Total Revenue</h3>
+      <p style="font-size:24px; color:#e63946;">₹8,75,000</p>
+    </div>
+  </div>
+
+  <div class="chart-section">
+    <h3>Ambulance Usage by Type</h3>
+    <p>BLS (Basic Life Support)</p>
+    <div class="chart-bar"><span class="bls">80%</span></div>
+    <p>ALS (Advanced Life Support)</p>
+    <div class="chart-bar"><span class="als">60%</span></div>
+    <p>PTV (Patient Transport Vehicle)</p>
+    <div class="chart-bar"><span class="ptv">40%</span></div>
+    <p>NA (Neonatal Ambulance)</p>
+    <div class="chart-bar"><span class="na">25%</span></div>
+    <p>AA (Air Ambulance)</p>
+    <div class="chart-bar"><span class="aa">5%</span></div>
+    <p>MA (Mortuary Ambulance)</p>
+    <div class="chart-bar"><span class="ma">10%</span></div>
+  </div>
+
+  <button onclick="window.print()">Print Report</button>
+</div>
+
+<footer>
+  <p>© 2025 Ambulance Booking System | Reports Dashboard</p>
+</footer>
+
+</body>
+</html>

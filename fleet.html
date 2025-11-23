@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<head>
+<title>Ambulance Fleet Details</title>
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f1f9ff;
+  margin: 0;
+  padding: 0;
+}
+header {
+  background: #0077b6;
+  color: #fff;
+  text-align: center;
+  padding: 15px;
+}
+.container {
+  padding: 20px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+}
+th, td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+th {
+  background: #0077b6;
+  color: white;
+}
+tr:hover {
+  background: #e3f2fd;
+}
+.status {
+  padding: 5px 10px;
+  border-radius: 20px;
+  color: white;
+  font-weight: bold;
+}
+.available { background: #2a9d8f; }
+.busy { background: #e63946; }
+.maintenance { background: #f4a261; }
+button {
+  padding: 6px 12px;
+  margin: 2px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+}
+.edit { background: #0077b6; }
+.delete { background: #d62828; }
+button:hover { opacity: 0.9; }
+footer {
+  text-align: center;
+  background: #0077b6;
+  color: white;
+  padding: 12px;
+  margin-top: 25px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h2>Ambulance Fleet Details</h2>
+</header>
+
+<div class="container">
+  <h3>Available Ambulances</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Ambulance ID</th>
+        <th>Type</th>
+        <th>Driver Name</th>
+        <th>Status</th>
+        <th>Hospital</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>AMB001</td>
+        <td>BLS</td>
+        <td>Ravi Kumar</td>
+        <td><span class="status available">Available</span></td>
+        <td>Apollo Hospital</td>
+        <td>
+          <button class="edit" onclick="alert('Edit Ambulance AMB001')">Edit</button>
+          <button class="delete" onclick="alert('Delete Ambulance AMB001')">Delete</button>
+        </td>
+      </tr>
+      <tr>
+        <td>AMB002</td>
+        <td>ALS</td>
+        <td>Mani Raj</td>
+        <td><span class="status busy">Busy</span></td>
+        <td>GH Chennai</td>
+        <td>
+          <button class="edit" onclick="alert('Edit Ambulance AMB002')">Edit</button>
+          <button class="delete" onclick="alert('Delete Ambulance AMB002')">Delete</button>
+        </td>
+      </tr>
+      <tr>
+        <td>AMB003</td>
+        <td>PTV</td>
+        <td>Deepak</td>
+        <td><span class="status maintenance">Maintenance</span></td>
+        <td>Vijaya Hospital</td>
+        <td>
+          <button class="edit" onclick="alert('Edit Ambulance AMB003')">Edit</button>
+          <button class="delete" onclick="alert('Delete Ambulance AMB003')">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>
+  <p>© 2025 Ambulance Booking System | Hospital Fleet Management</p>
+</footer>
+
+</body>
+</html>

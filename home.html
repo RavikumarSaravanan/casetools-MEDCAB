@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<head>
+    <title>Ambulance Booking System - Home</title>
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+}
+
+.container {
+    width: 140%;
+    margin: 0 auto;
+    overflow: auto; 
+    max-width: 1100px;
+}
+
+a {
+    text-decoration: none;
+    color: #0056b3;
+}
+
+ul {
+    list-style: none;
+}
+
+header {
+    background: #003366;
+    color: #ffffff;
+    padding: 1rem 0;
+    border-bottom: 3px solid #ff4136; /* Red accent color */
+}
+
+header .logo {
+    float: left;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+header nav {
+    float: right;
+}
+
+header nav ul {
+    display: flex;
+}
+
+header nav ul li {
+    margin-left: 20px;
+}
+
+header nav ul li a {
+    color: #ffffff;
+    padding: 5px 10px;
+    transition: background-color 0.3s;
+}
+
+header nav ul li a:hover {
+    background-color: #ff4136;
+    border-radius: 4px;
+}
+
+.hero-section {
+    background: #22aef0;
+    color: #ffffff;
+    padding: 100px 0;
+    text-align: center;
+    background-image: url('ambulance_background.jpg'); 
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-section h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.hero-section p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.cta-button {
+    display: inline-block;
+    background: #ff4136;
+    color: #ffffff;
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.cta-button:hover {
+    background: #e12b21;
+}
+
+.booking-section {
+    padding: 40px 0;
+    background: #ffffff;
+    border-bottom: 1px solid #ddd;
+}
+
+.booking-section h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #003366;
+}
+
+#bookingForm {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#bookingForm label {
+    font-weight: bold;
+    color: #555;
+}
+
+#bookingForm input[type="text"],
+#bookingForm select,
+#bookingForm button {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+#bookingForm button {
+    background: #28a745; 
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#bookingForm button:hover {
+    background: #218838;
+}
+
+#statusMessage {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+    color: #0056b3;
+}
+
+.services-section {
+    padding: 40px 0;
+    background: #f9f9f9;
+}
+
+.services-section h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #003366;
+}
+
+.service-cards {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    gap: 20px;
+   
+
+}
+.card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  width: 360px;                
+  height: 380px;                
+  overflow: hidden;          
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card img {
+  width: 100%;
+  height: 220px;                
+  object-fit: cover;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.card h3 {
+  color: #0077b6;               
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 15px 0 8px 0;
+}
+
+.card p {
+  color: #555;
+  font-size: 14px;
+  padding: 0 15px 15px;
+  line-height: 1.4;
+}
+
+footer {
+    background: #333;
+    color: #ffffff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 20px;
+}
+
+footer p {
+    margin-bottom: 5px;
+}
+
+.sidebar-toggle {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color:transparent;
+      color:white;
+      border:none;
+      border-radius:50%;
+      width:45px;
+      height:45px;
+      cursor:pointer;
+      font-size:24px;
+      z-index: 999;
+    }
+
+     .sidebar {
+      position: fixed;
+      left: -250px;
+      top: 0;
+      width: 250px;
+      height: 100%;
+      background-color: #2c3e50;
+      color: white;
+      transition: right 0.4s ease;
+      padding-top: 70px;
+      z-index: 998;
+    }
+
+    .sidebar.active {
+      left: 0;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      padding: 15px 20px;
+      border-bottom: 1px solid #34495e;
+    }
+
+    .sidebar ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.1em;
+      display: block;
+    }
+
+    .sidebar ul li a:hover {
+      background-color: #34495e;
+      border-radius: 4px;
+    }
+
+@media (max-width: 730px) {
+    header .logo,
+    header nav {
+        float: none;
+        text-align: center;
+    }
+
+    header nav ul {
+        margin-top: 10px;
+        justify-content: center;
+    }
+
+    .service-cards {
+        flex-direction: column;
+    }
+
+    .container {
+        width: 95%;
+    }
+}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">🚑 Medical Cab</div>
+            <nav>
+                <ul>
+                    <li><a href="Home">Home</a></li>
+                    <li><a href="#">Register</a></li>
+                    <li><a href="payment.html">Payment</a></li>
+                    <li><a href="report.html">Report</a></li>
+                    <li><a href="login.html">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section" id="hero-section">
+            <div class="container">
+                <h1>Emergency? Book an Ambulance?</h1>
+                <p>Fast, reliable, 24/7 ambulance services to your location.</p>
+                <a href="user.html" class="cta-button">Book Now</a>
+            </div>
+        </section>
+
+
+    <section class="services-section" id ="services-section">
+    <div class="container">
+        <h2>Our Services</h2>
+    <div class="service-cards">
+    <div class="card" onclick="goToBooking('BLS')">
+       <img src="am!1.jpg" alt="BLS Ambulance">
+      <h3>Basic Life Support (BLS)</h3>
+      <p>For non-critical patients needing basic care and transport.</p>
+    </div>
+
+    <div class="card" onclick="goToBooking('ALS')">
+      <img src="am!2.jpg" alt="ALS Ambulance">
+      <h3>Advanced Life Support (ALS)</h3>
+      <p>For critical patients needing advanced emergency support.</p>
+    </div>
+
+    <div class="card" onclick="goToBooking('PTV')">
+      <img src="am!3.jpg" alt="PTV Ambulance">
+      <h3>Patient Transport Vehicle (PTV)</h3>
+      <p>For stable patients needing regular hospital transfers.</p>
+    </div>
+
+    <div class="card" onclick="goToBooking('Neonatal')">
+      <img src="am!4.jpg" alt="Neonatal Ambulance">
+      <h3>Neonatal Ambulance</h3>
+      <p>Specialized for newborn and premature baby transport.</p>
+    </div>
+
+    <div class="card" onclick="goToBooking('Air')">
+      <img src="am!5.jpg" alt="Air Ambulance">
+      <h3>Air Ambulance</h3>
+      <p>Fast emergency medical transfer by helicopter or airplane.</p>
+    </div>
+
+    <div class="card" onclick="goToBooking('Mortuary')">
+      <img src="am!6.jpg" alt="Mortuary Ambulance">
+      <h3>Mortuary Ambulance</h3>
+      <p>For safe and respectful transfer of deceased individuals.</p>
+    </div>
+
+    </div>
+    </div>
+    </section>
+
+<button class="sidebar-toggle" id="sidebarToggle">☰</button>
+  <div class="sidebar" id="sidebarMenu">
+    <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services-sections">Services</a></li>
+                    <li><a href="register.html">Register</a></li>                  
+                    <li><a href="payment.html">Payment</a></li>
+                    <li><a href="report.html">Report</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="avc.html">Available Ambulance</a></li>
+    </ul>
+  </div> 
+    </main>
+
+    <footer>
+        <div class="container">
+            <p> Copyright &copy; 2025 🚑 MeDCaB Service. All rights reserved.</p>
+            <p>Emergency Contact: Please call emergency services in case of an emergency.</p>
+        </div>
+    </footer>
+
+    <script src="home.js"></script>
+    <script>
+function goToBooking(type) {
+  window.location.href = "booking.html?type=" + type;
+}
+
+ const sidebar = document.getElementById('sidebarMenu');
+    const toggleBtn = document.getElementById('sidebarToggle');
+
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+      toggleBtn.textContent = sidebar.classList.contains('active') ? '×' : '☰';
+    });
+
+ 
+  const isLoggedIn = localStorage.getItem("loggedIn");
+
+  
+  const bookNowButton = document.querySelector('.cta-button');
+
+  bookNowButton.addEventListener('click', function(event) {
+    event.preventDefault(); 
+    
+    if (isLoggedIn === "true") {
+     
+      document.querySelector('.services-section').scrollIntoView({
+        behavior: "smooth"
+      });
+    } else {
+      
+      window.location.href = "login.html";
+    }
+  });
+
+
+</script>
+    </body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<head>
+<title>New Requests - Ambulance Booking System</title>
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #e3f2fd;
+  margin: 0;
+  padding: 0;
+}
+header {
+  background: #0077b6;
+  color: #fff;
+  padding: 15px;
+  text-align: center;
+}
+.container {
+  padding: 20px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+th, td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+th {
+  background: #0077b6;
+  color: #fff;
+}
+tr:hover {
+  background: #f1f1f1;
+}
+button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 2px;
+  font-size: 14px;
+}
+.view { background: #00b4d8; color: white; }
+.accept { background: #2a9d8f; color: white; }
+.reject { background: #e63946; color: white; }
+button:hover { opacity: 0.9; }
+footer {
+  text-align: center;
+  margin-top: 30px;
+  padding: 15px;
+  background: #0077b6;
+  color: #fff;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h2>Ambulance Booking System - New Requests</h2>
+</header>
+
+<div class="container">
+  <h3>Pending Ambulance Requests</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Request ID</th>
+        <th>Patient Name</th>
+        <th>Location</th>
+        <th>Ambulance Type</th>
+        <th>Time</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>#REQ101</td>
+        <td>Arun Kumar</td>
+        <td>Chennai</td>
+        <td>BLS</td>
+        <td>10:30 AM</td>
+        <td>Pending</td>
+        <td>
+          <button class="view" onclick="alert('Viewing Arun Kumar details')">View</button>
+          <button class="accept" onclick="alert('Request Accepted')">Accept</button>
+          <button class="reject" onclick="alert('Request Rejected')">Reject</button>
+        </td>
+      </tr>
+      <tr>
+        <td>#REQ102</td>
+        <td>Divya R</td>
+        <td>Madurai</td>
+        <td>ALS</td>
+        <td>11:00 AM</td>
+        <td>Pending</td>
+        <td>
+          <button class="view" onclick="alert('Viewing Divya R details')">View</button>
+          <button class="accept" onclick="alert('Request Accepted')">Accept</button>
+          <button class="reject" onclick="alert('Request Rejected')">Reject</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>
+  <p>© 2025 Ambulance Booking System | Hospital Dashboard</p>
+</footer>
+
+</body>
+</html>
